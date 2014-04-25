@@ -661,6 +661,37 @@ class Solr(object):
         self.log.debug("Found '%s' MLT results.", result['response']['numFound'])
         return Results(result['response']['docs'], result['response']['numFound'])
 
+
+def more_like_this_stream_body(self, stream_body, mltfl, **kwargs):
+        """
+        Finds and returns results similar to the provided text in stream.body.
+
+        Requires Solr 1.3+.
+
+        Usage::
+
+            similar = solr.more_like_this('id:doc_234', 'text')
+
+        """
+        params = {
+            'stream.body': stream_body,
+            'mlt.fl': mltfl,
+        }
+        params.update(kwargs)
+        response = self._mlt(params)
+
+        result = self.decoder.decode(response)
+
+        if result['response'] is None:
+            result['response'] = {
+                'docs': [],
+                'numFound': 0,
+            }
+
+        self.log.debug("Found '%s' MLT results.", result['response']['numFound'])
+        return Results(result['response']['docs'], result['response']['numFound'])
+
+
     def suggest_terms(self, fields, prefix, **kwargs):
         """
         Accepts a list of field names and a prefix
