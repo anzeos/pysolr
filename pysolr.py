@@ -662,7 +662,7 @@ class Solr(object):
         return Results(result['response']['docs'], result['response']['numFound'])
 
 
-def more_like_this_stream_body(self, stream_body, mltfl, **kwargs):
+    def more_like_this_stream_body(self, stream_body, mltfl, **kwargs):
         """
         Finds and returns results similar to the provided text in stream.body.
 
